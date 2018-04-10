@@ -1,0 +1,8 @@
+# This playbook deploys the whole application stack in this site.
+
+- name: copy zabbix ceph UnsafeUserParameters config
+  hosts: ceph
+  remote_user: root
+
+  roles:
+    - common
