@@ -10,3 +10,6 @@ https://github.com/thelan/ceph-zabbix
 #ansible-examples
 =====================
 https://github.com/ansible/ansible-examples
+
+
+#ceph osd pg num check

@@ -1,0 +1,1 @@
+ceph pg dump|grep '23\.'|awk -F ' ' '{print $1, $15}'|awk -F "[ ]|[[]|[,]|[]]" '{print $3, $4}'|tr -s ' ' '\n'|sort|uniq -c|sort -r|awk '{printf("%s\n", $1)}'|awk '{x[NR]=$0;s+=$0;n++} END{a=s/n;for(i in x) {ss += (x[i]-a)^2} sd = sqrt(ss/n); print "SD = "sd}'
