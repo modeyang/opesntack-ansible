@@ -40,7 +40,7 @@
   apt: pkg=bc state=installed update_cache=true
   shell: chmod +x /opt/ceph-status.sh
 
--name: restart zabbix_agent
+- name: restart zabbix_agent
   copy: src=zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf
   tags: zabbix_agent
   notify: restart zabbix_agent
