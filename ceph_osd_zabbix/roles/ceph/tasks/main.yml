@@ -1,0 +1,47 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: Configure zabbix_confige file
+  lineinfile:
+          state: persent 
+          dest: /etc/zabbix/zabbix_agentd.conf 
+          regexp: 'UserParameter=ceph.'
+          line: 'UserParameter=ceph.health, /opt/ceph-status.sh health'
+          line: 'UserParameter=ceph.count, /opt/ceph-status.sh count'
+          line: 'UserParameter=ceph.osd_in, /opt/ceph-status.sh in'
+          line: 'UserParameter=ceph.osd_up, /opt/ceph-status.sh up'
+          line: 'UserParameter=ceph.active, /opt/ceph-status.sh active'
+          line: 'UserParameter=ceph.backfill, /opt/ceph-status.sh backfill'
+          line: 'UserParameter=ceph.clean, /opt/ceph-status.sh clean'
+          line: 'UserParameter=ceph.creating, /opt/ceph-status.sh creating'
+          line: 'UserParameter=ceph.degraded, /opt/ceph-status.sh degraded'
+          line: 'UserParameter=ceph.degraded_percent, /opt/ceph-status.sh degraded_percent'
+          line: 'UserParameter=ceph.down, /opt/ceph-status.sh down'
+          line: 'UserParameter=ceph.incomplete, /opt/ceph-status.sh incomplete'
+          line: 'UserParameter=ceph.inconsistent, /opt/ceph-status.sh inconsistent'
+          line: 'UserParameter=ceph.peering, /opt/ceph-status.sh peering'
+          line: 'UserParameter=ceph.recovering, /opt/ceph-status.sh recovering'
+          line: 'UserParameter=ceph.remapped, /opt/ceph-status.sh remapped'
+          line: 'UserParameter=ceph.repair, /opt/ceph-status.sh repair'
+          line: 'UserParameter=ceph.replay, /opt/ceph-status.sh replay'
+          line: 'UserParameter=ceph.scrubbing, /opt/ceph-status.sh scrubbing'
+          line: 'UserParameter=ceph.splitting, /opt/ceph-status.sh splitting'
+          line: 'UserParameter=ceph.stale, /opt/ceph-status.sh stale'
+          line: 'UserParameter=ceph.pgtotal, /opt/ceph-status.sh pgtotal'
+          line: 'UserParameter=ceph.waitBackfill, /opt/ceph-status.sh waitBackfill'
+          line: 'UserParameter=ceph.mon, /opt/ceph-status.sh mon'
+          line: 'UserParameter=ceph.rados_total, /opt/ceph-status.sh rados_total'
+          line: 'UserParameter=ceph.rados_used, /opt/ceph-status.sh rados_used'
+          line: 'UserParameter=ceph.rados_free, /opt/ceph-status.sh rados_free'
+          line: 'UserParameter=ceph.wrbps, /opt/ceph-status.sh wrbps'
+          line: 'UserParameter=ceph.rdbps, /opt/ceph-status.sh rdbps'
+          line: 'UserParameter=ceph.ops, /opt/ceph-status.sh ops'
+  copy: src=ceph-status.sh dest=/opt/ceph-status.sh
+  apt: pkg=bc state=installed update_cache=true
+  shell: chmod +x /opt/ceph-status.sh
+
+-name: restart zabbix_agent
+  copy: src=zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf
+  tags: zabbix_agent
+  notify: restart zabbix_agent
+

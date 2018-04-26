@@ -2,23 +2,17 @@
 # This playbook contains common plays that will be run on all nodes.
 
 - name: Configure zabbix_confige file
+  lineinfile:
+          state: persent 
+          dest: /etc/zabbix/zabbix_agentd.conf 
+          regexp: 'openstack-discovery'
+          line: 'UserParameter=openstack-discovery[*], /opt/openstack-discovery $1 $2 $3 $4 $5'
+          line: 'UserParameter=openstack-discovery.host[*], /opt/openstack-discovery $1 $2 $3 $4 $5 $6'
+  copy: src=openstack-discovery dest=/opt/openstack-discovery 
+  shell: chmod +x /opt/openstack-discovery 
+
+- name: restart zabbix_agent
   copy: src=zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf
   tags: zabbix_agent
   notify: restart zabbix_agent
 
-- name: Copy ceph-status.sh file
-  copy: src=ceph-status.sh dest=/opt/ceph-status.sh
-  tags: zabbix_agent
-
-- name: chmod +x ceph-status.sh file
-  shell: chmod +x /opt/ceph-status.sh
-  tags: zabbix_agent
-
-- name: Start the zabbix-agent service
-  service: name=zabbix-agent state=restarted enabled=yes
-  tags: zabbix_agent
-
-
-- name: apt install bc
-  apt: pkg=bc state=installed update_cache=true
-  tags: zabbix_agent

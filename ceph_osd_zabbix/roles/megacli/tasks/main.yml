@@ -13,3 +13,21 @@
   apt: pkg=megacli megactl megaraid-status state=present update_cache=yes
   apt: pkg=megaraid-status state=present update_cache=yes
   apt: pkg=megactl state=present update_cache=yes
+
+- name: Configure zabbix_agentd.conf 
+  lineinfile:
+          state: persent
+          dest: /etc/zabbix/zabbix_agentd.conf 
+          regexp: '^UserParameter=raid.phy'
+          line: 'UserParameter=raid.phy.discovery,/etc/zabbix/scripts/raid_disk_status/raid.py pd_discovery'
+          line: 'UserParameter=raid.phy.mec[*],/etc/zabbix/scripts/raid_disk_status/raid.py mec $1'
+          line: 'UserParameter=raid.phy.oec[*],/etc/zabbix/scripts/raid_disk_status/raid.py oec $1'
+          line: 'UserParameter=raid.phy.pfc[*],/etc/zabbix/scripts/raid_disk_status/raid.py pfc $1'
+          line: 'UserParameter=raid.phy.status[*],/etc/zabbix/scripts/raid_disk_status/raid.py status $1'
+          line: 'UserParameter=raid.phy.amount,/etc/zabbix/scripts/raid_disk_status/raid.py amount'
+  shell: mkdir -p /etc/zabbix/scripts/raid_disk_status/
+  copy: src=raid.py dest=/etc/zabbix/scripts/raid_disk_status/raid.py
+  shell: chmod +x /etc/zabbix/scripts/raid_disk_status/raid.py
+
+- name: rstart zabbix_agentd 
+  service: name=zabbix-agent state=restarted enabled=yes
