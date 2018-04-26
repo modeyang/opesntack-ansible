@@ -17,16 +17,26 @@
 - name: Configure zabbix_agentd.conf 
   lineinfile:
           state: persent
-          dest: /etc/zabbix/zabbix_agentd.conf 
-          regexp: '^UserParameter=raid.phy'
-          line: 'UserParameter=raid.phy.discovery,/etc/zabbix/scripts/raid_disk_status/raid.py pd_discovery'
-          line: 'UserParameter=raid.phy.mec[*],/etc/zabbix/scripts/raid_disk_status/raid.py mec $1'
-          line: 'UserParameter=raid.phy.oec[*],/etc/zabbix/scripts/raid_disk_status/raid.py oec $1'
-          line: 'UserParameter=raid.phy.pfc[*],/etc/zabbix/scripts/raid_disk_status/raid.py pfc $1'
-          line: 'UserParameter=raid.phy.status[*],/etc/zabbix/scripts/raid_disk_status/raid.py status $1'
-          line: 'UserParameter=raid.phy.amount,/etc/zabbix/scripts/raid_disk_status/raid.py amount'
+          dest=: /etc/zabbix/zabbix_agentd.conf 
+          regexp: '^#UserParameter='
+          line: '#UserParameter=ABC'
+          
+#          line='UserParameter=raid.phy.discovery,/etc/zabbix/scripts/raid_disk_status/raid.py pd_discovery'
+#          line='UserParameter=raid.phy.mec[*],/etc/zabbix/scripts/raid_disk_status/raid.py mec $1'
+#          line='UserParameter=raid.phy.oec[*],/etc/zabbix/scripts/raid_disk_status/raid.py oec $1'
+#          line='UserParameter=raid.phy.pfc[*],/etc/zabbix/scripts/raid_disk_status/raid.py pfc $1'
+#          line='UserParameter=raid.phy.status[*],/etc/zabbix/scripts/raid_disk_status/raid.py status $1'
+#          line='UserParameter=raid.phy.amount,/etc/zabbix/scripts/raid_disk_status/raid.py amount'
+#          insertbefore="ruler:other end"
+#          insertafter="ruler:other start"
+
+- name: creater dir
   shell: mkdir -p /etc/zabbix/scripts/raid_disk_status/
+
+- name: copy script
   copy: src=raid.py dest=/etc/zabbix/scripts/raid_disk_status/raid.py
+
+- name: chmod script
   shell: chmod +x /etc/zabbix/scripts/raid_disk_status/raid.py
 
 - name: rstart zabbix_agentd 
