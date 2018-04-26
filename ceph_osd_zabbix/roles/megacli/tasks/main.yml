@@ -1,0 +1,15 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: Configure sources file
+  copy: src=sources.list dest=/etc/apt/sources.list
+  tags: sources file 
+
+- name: add gpg
+  command: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C407E17D5F76A32B
+  command: sudo gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys
+
+- name: apt install megacli megactl megaraid-status
+  apt: pkg=megacli megactl megaraid-status state=present update_cache=yes
+  apt: pkg=megaraid-status state=present update_cache=yes
+  apt: pkg=megactl state=present update_cache=yes
