@@ -8,9 +8,16 @@
     - megacli
 
 
-- name: copy zabbix ceph UnsafeUserParameters config
-  hosts: ceph-osd
+- name: openstack zabbix controller
+  hosts: controller
   remote_user: root
 
   roles:
-    - common
+    - openstack 
+
+- name: ceph zabbix 
+  hosts: ceph 
+  remote_user: root 
+
+  roles:
+    - ceph
