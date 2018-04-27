@@ -3,7 +3,7 @@
 ## all host 
 
 1. all install megacli
-2. copy zabbix_agentd.conf - raid.phy.discovery
+2. add zabbix_agentd.conf.d - raid.phy.discovery
 3. copy raid.py
 4. restart zabbix_agentd
 
