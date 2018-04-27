@@ -1,9 +1,9 @@
 #ceph osd pg num check
 ===========================
-{check osd pg pool num }
+1. check osd pg pool num 
 统计各osd上所有pg数(获取各osd所有pool的pg数)：
 
-···
+```
 run :ceph_osd_check# sh ceph_osd_pg_num.sh
 dumped all in format plain
 
@@ -34,6 +34,6 @@ osd.8   8       8       4       14      4       25      24      5       32      
 osd.9   8       3       5       4       4       18      26      8       21      7       7       5       6       | 122
 ------------------------------------------------------------------------------------------------------------------------
 SUM :   192     192     192     192     192     768     768     192     768     192     192     192     192     |
+```
 
 ceph_osd_check# sh ceph_osd_pg_check.sh
-···
