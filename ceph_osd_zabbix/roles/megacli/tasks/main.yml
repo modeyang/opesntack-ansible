@@ -17,6 +17,9 @@
 - name: Configure zabbixagentd conf
   copy: src=zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf
 
+- name: Configure raid.phy conf
+  copy: src=raid_disk_status.conf dest=/etc/zabbix/zabbix_agentd.conf.d/
+
 - name: creater dir
   shell: mkdir -p /etc/zabbix/scripts/raid_disk_status/
 
