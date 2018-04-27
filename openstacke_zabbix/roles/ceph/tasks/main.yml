@@ -2,7 +2,8 @@
 # This playbook contains common plays that will be run on all nodes.
 
 - name: Configure zabbix_confige file
-  copy: src=zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf
+  copy: src=ceph_stauts_zabbix.conf dest=/etc/zabbix/zabbix_agentd.conf.d/
+
 - name: copy script
   copy: src=ceph-status.sh dest=/opt/ceph-status.sh
 
