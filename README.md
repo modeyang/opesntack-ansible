@@ -6,6 +6,10 @@
 
 [Zabbix plugin for Ceph monitoring](https://github.com/thelan/ceph-zabbix)
 
+### Zabbix plugin for Openstack monitoring
+
+[Zabbix plugin for Openstack monitoring](https://github.com/cloudowski/zabbix-openstack)
+
 ### ansible setup ceph
 
 [ansible-examples](https://github.com/ansible/ansible-examples)
