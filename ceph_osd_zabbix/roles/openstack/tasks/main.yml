@@ -2,13 +2,12 @@
 # This playbook contains common plays that will be run on all nodes.
 
 - name: Configure zabbix_confige file
-  lineinfile:
-          state: persent 
-          dest: /etc/zabbix/zabbix_agentd.conf 
-          regexp: 'openstack-discovery'
-          line: 'UserParameter=openstack-discovery[*], /opt/openstack-discovery $1 $2 $3 $4 $5'
-          line: 'UserParameter=openstack-discovery.host[*], /opt/openstack-discovery $1 $2 $3 $4 $5 $6'
+  copy: src=zabbix_agentd.conf dest=/etc/zabbix/zabbix_agentd.conf
+
+- name: copy script
   copy: src=openstack-discovery dest=/opt/openstack-discovery 
+
+- name: chmod script
   shell: chmod +x /opt/openstack-discovery 
 
 - name: restart zabbix_agent
