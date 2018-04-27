@@ -98,6 +98,9 @@ UserParameter=ceph.ops, /opt/ceph-status.sh ops
    - ceph status check zabbix_agentd.conf
 
 
-
+script
+raid.py
+openstack-dis
+ceph
    
  
