@@ -12,6 +12,9 @@
 1. copy zabbix_agentd.conf - openstack-discovery
 2. copy openstack-discovery
 3. restart zabbix_agentd
+4. command : pip install requirements.txt
+
+   - [Install the OpenStack command-line clients](https://docs.openstack.org/newton/user-guide/common/cli-install-openstack-command-line-clients.html)
 
 ## ceph host
 
