@@ -75,7 +75,6 @@ def discover_hypervisors(auth_url, tenant_name, username, password):
     conn = nova = client.Client(2, username, password, tenant_name, auth_url)
 
     hypervisors = []
-    print conn.hypervisors.list(detailed=True)
     for h in conn.hypervisors.list(detailed=True):
         if h.status == 'enabled':
           #print h.free_disk_gb
@@ -83,9 +82,50 @@ def discover_hypervisors(auth_url, tenant_name, username, password):
           #print h.running_vms
           #print h.state
           #print h.service
-          hypervisors.append({'{#OS_HYPERVISOR_HOSTNAME}':h.hypervisor_hostname, '{#OS_HYPERVISOR_IP}':h.host_ip, '{#OS_HYPERVISOR_TYPE}':h.hypervisor_type, '{#OS_HYPERVISOR_STATE}':h.state 	 })
+	  if h.state == 'up':
+              state = 1
+          else:
+              state = 0
+          hypervisors.append({'{#OS_HYPERVISOR_HOSTNAME}':h.hypervisor_hostname, '{#OS_HYPERVISOR_IP}':h.host_ip, '{#OS_HYPERVISOR_TYPE}':h.hypervisor_type, '{#OS_HYPERVISOR_STATE}':state 	 })
 
     print_json(hypervisors)
+
+
+def discover_hypervisors_status(auth_url, tenant_name, username, password, action,host_name):
+    conn = nova = client.Client(2, username, password, tenant_name, auth_url)
+
+    hypervisors = []
+    for h in conn.hypervisors.list(detailed=True):
+        if h.status == 'enabled':
+	    if h.hypervisor_hostname in hostname:
+                if action == 'hypervisors_state':
+                    if h.state == 'up':
+                        state = 1
+                    else:
+                        state = 0
+                elif action == 'local_gb':
+                    state = h.local_gb
+                elif action == 'memory_mb':
+                    state = h.memory_mb
+                elif action == 'vcpus':
+                    state = h.vcpus
+                elif action == 'local_gb_used':
+                    state = h.local_gb
+                elif action == 'memory_mb_used':
+                    state = h.memory_mb
+                elif action == 'vcpus_used':
+                    state = h.vcpus
+                elif action == 'running_vms':
+                    state = h.running_vms
+		print state
+          #print h.free_disk_gb
+          #print h.free_ram_mb
+          #print h.running_vms
+          #print h.state
+          #print h.service
+#          hypervisors.append({'{#OS_HYPERVISOR_HOSTNAME}':h.hypervisor_hostname, '{#OS_HYPERVISOR_IP}':h.host_ip, '{#OS_HYPERVISOR_TYPE}':h.hypervisor_type, '{#OS_HYPERVISOR_STATE}':state      })
+#
+#    print_json(hypervisors)
 
 def discover_hypervisors_v3(auth_url, tenant_name, username, password, user_domain_name, project_domain_name):
     auth = v3.Password(auth_url=auth_url, username=username,
@@ -103,7 +143,7 @@ def discover_hypervisors_v3(auth_url, tenant_name, username, password, user_doma
 
 
 if __name__ == '__main__':
-    if (len(argv) not in [6,8]):    
+    if (len(argv) not in [6,7,8]):    
         print """Usage: %s TYPE AUTH_URL TENANT USERNAME PASSWORD
           where
 
@@ -114,6 +154,7 @@ if __name__ == '__main__':
           PASSWORD  - password for user
           (v3 only) USER_DOMAIN_NAME - user domain name
           (v3 only) PROJECT_DOMAIN_NAME - project domain name
+          hostname - hostname
           """ % argv[0]
         exit(2)
     else:
@@ -121,6 +162,8 @@ if __name__ == '__main__':
         
     if TYPE in ['endpoints_v3', 'hypervisors_v3']:
         (USER_DOMAIN_NAME, PROJECT_DOMAIN_NAME) = argv[6:] 
+    elif TYPE in ['hypervisors_state','running_vms','local_gb','memory_mb','vcpus','local_gb_used','memory_mb_used','vcpus_uesd']:
+        ( hostname) = argv[6:]
 
     if TYPE == 'endpoints':
       discover_endpoints(AUTH_URL,TENANT,USERNAME,PASSWORD)
@@ -130,6 +173,9 @@ if __name__ == '__main__':
       discover_endpoints_v3(AUTH_URL,TENANT,USERNAME,PASSWORD, USER_DOMAIN_NAME, PROJECT_DOMAIN_NAME)
     elif TYPE == 'hypervisors_v3':
       discover_hypervisors_v3(AUTH_URL,TENANT,USERNAME,PASSWORD, USER_DOMAIN_NAME, PROJECT_DOMAIN_NAME)
+    elif TYPE in ['hypervisors_state','running_vms','local_gb','memory_mb','vcpus','local_gb_used','memory_mb_used','vcpus_uesd']:
+      discover_hypervisors_status(AUTH_URL,TENANT,USERNAME,PASSWORD, TYPE, hostname)
+      
     else:
       print 'ZBX_NOTSUPPORTED\x00 Unknown type: %s' % TYPE
       exit(1)
