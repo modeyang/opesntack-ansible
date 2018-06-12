@@ -2,14 +2,10 @@
 # This playbook contains common plays that will be run on all nodes.
 
 - name: Configure zabbix_confige file
-  copy: src=openstack_status_zabbix.conf dest=/etc/zabbix/zabbix_agentd.conf.d/
+  copy: src=openstack_status_zabbix.conf dest={{ zabbix_include_dir }}
+  notify:
+    - restart zabbix-agent
 
-- name: copy script
-  copy: src=openstack-discovery dest=/opt/openstack-discovery 
-
-- name: chmod script
-  shell: chmod +x /opt/openstack-discovery 
-
-- name: restart zabbix_agent
-  service: name=zabbix-agent state=restarted enabled=yes
+- name: copy script to dest
+  copy: src=openstack-discovery dest=/opt/openstack-discovery mode=u+x backup=yes 
 

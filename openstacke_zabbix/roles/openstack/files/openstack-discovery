@@ -114,7 +114,7 @@ def discover_hypervisors_status(auth_url, tenant_name, username, password, actio
                 elif action == 'memory_mb_used':
                     state = h.memory_mb
                 elif action == 'vcpus_used':
-                    state = h.vcpus
+                    state = h.vcpus_used
                 elif action == 'running_vms':
                     state = h.running_vms
 		print state
@@ -162,7 +162,7 @@ if __name__ == '__main__':
         
     if TYPE in ['endpoints_v3', 'hypervisors_v3']:
         (USER_DOMAIN_NAME, PROJECT_DOMAIN_NAME) = argv[6:] 
-    elif TYPE in ['hypervisors_state','running_vms','local_gb','memory_mb','vcpus','local_gb_used','memory_mb_used','vcpus_uesd']:
+    elif TYPE in ['hypervisors_state','running_vms','local_gb','memory_mb','vcpus','local_gb_used','memory_mb_used','vcpus_used']:
         ( hostname) = argv[6:]
 
     if TYPE == 'endpoints':
@@ -173,7 +173,7 @@ if __name__ == '__main__':
       discover_endpoints_v3(AUTH_URL,TENANT,USERNAME,PASSWORD, USER_DOMAIN_NAME, PROJECT_DOMAIN_NAME)
     elif TYPE == 'hypervisors_v3':
       discover_hypervisors_v3(AUTH_URL,TENANT,USERNAME,PASSWORD, USER_DOMAIN_NAME, PROJECT_DOMAIN_NAME)
-    elif TYPE in ['hypervisors_state','running_vms','local_gb','memory_mb','vcpus','local_gb_used','memory_mb_used','vcpus_uesd']:
+    elif TYPE in ['hypervisors_state','running_vms','local_gb','memory_mb','vcpus','local_gb_used','memory_mb_used','vcpus_used']:
       discover_hypervisors_status(AUTH_URL,TENANT,USERNAME,PASSWORD, TYPE, hostname)
       
     else:
