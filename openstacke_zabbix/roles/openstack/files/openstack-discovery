@@ -110,9 +110,9 @@ def discover_hypervisors_status(auth_url, tenant_name, username, password, actio
                 elif action == 'vcpus':
                     state = h.vcpus
                 elif action == 'local_gb_used':
-                    state = h.local_gb
+                    state = h.local_gb_used
                 elif action == 'memory_mb_used':
-                    state = h.memory_mb
+                    state = h.memory_mb_used
                 elif action == 'vcpus_used':
                     state = h.vcpus_used
                 elif action == 'running_vms':

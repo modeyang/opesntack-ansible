@@ -2,16 +2,12 @@
 # This playbook contains common plays that will be run on all nodes.
 
 - name: Configure zabbix_confige file
-  copy: src=ceph_stauts_zabbix.conf dest=/etc/zabbix/zabbix_agentd.conf.d/
+  copy: src=ceph_stauts_zabbix.conf dest={{ zabbix_include_dir }}
+  notify:
+    - restart zabbix-agent
 
 - name: copy script
-  copy: src=ceph-status.sh dest=/opt/ceph-status.sh
+  copy: src=ceph-status.sh dest=/opt/ceph-status.sh mode=u+x backup=yes 
 
 - name: apt install bc
-  apt: pkg=bc state=installed update_cache=true
-
-- name: chmod +x script
-  shell: chmod +x /opt/ceph-status.sh
-
-- name: restart zabbix_agent
-  service: name=zabbix-agent state=restarted enabled=yes
+  apt: name=bc state=present update_cache=yes
